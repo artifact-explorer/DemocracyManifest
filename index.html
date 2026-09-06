@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bureau of Civic Records</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F7F5F0;
+  --paper-dim:#EFEBE1;
+  --ink:#1C2B2D;
+  --ink-soft:#3C4A4C;
+  --seal:#8B2635;
+  --seal-dark:#6E1E2A;
+  --treasury:#2F5233;
+  --treasury-light:#3F6B45;
+  --gold:#B8912A;
+  --gold-light:#E4C766;
+  --line:rgba(28,43,45,0.14);
+  --line-strong:rgba(28,43,45,0.28);
+  --white:#FFFDF9;
+  --serif:'Newsreader', Georgia, serif;
+  --mono:'IBM Plex Mono', monospace;
+  --sans:'Inter', -apple-system, sans-serif;
+  --shadow-card: 0 1px 0 rgba(28,43,45,0.06), 0 8px 24px -12px rgba(28,43,45,0.18);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  min-height:100vh;
+  background-image:
+    radial-gradient(circle at 2px 2px, rgba(28,43,45,0.035) 1px, transparent 0);
+  background-size:22px 22px;
+}
+
+/* ============ TOP MASTHEAD ============ */
+.masthead{
+  border-bottom:3px double var(--ink);
+  background:linear-gradient(180deg, var(--white), var(--paper));
+  padding:22px 28px 16px;
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+.masthead-row{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  max-width:1180px;
+  margin:0 auto;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.masthead-title{
+  font-family:var(--serif);
+  font-size:29px;
+  font-weight:600;
+  letter-spacing:0.2px;
+  color:var(--ink);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.seal-mark{
+  width:34px;height:34px;
+  border-radius:50%;
+  border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:15px;
+  color:var(--gold);
+  background:var(--ink);
+  flex-shrink:0;
+}
+.masthead-meta{
+  font-family:var(--mono);
+  font-size:11.5px;
+  color:var(--ink-soft);
+  text-align:right;
+  line-height:1.6;
+}
+.masthead-meta span{color:var(--seal);font-weight:600;}
+
+.tab-row{
+  max-width:1180px;
+  margin:16px auto 0;
+  display:flex;
+  gap:2px;
+  border-bottom:1px solid var(--line-strong);
+}
+.tab-btn{
+  font-family:var(--sans);
+  font-size:14px;
+  font-weight:600;
+  color:var(--ink-soft);
+  background:none;
+  border:none;
+  padding:10px 18px 12px;
+  cursor:pointer;
+  border-bottom:2px solid transparent;
+  margin-bottom:-1px;
+  transition:color .15s ease;
+}
+.tab-btn:hover{color:var(--ink);}
+.tab-btn.active{
+  color:var(--seal);
+  border-bottom-color:var(--seal);
+}
+
+/* ============ LAYOUT ============ */
+.page{
+  max-width:1180px;
+  margin:0 auto;
+  padding:28px;
+}
+.view{display:none;}
+.view.active{display:block;}
+
+.grid-2{display:grid;grid-template-columns:1.3fr 1fr;gap:22px;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+@media(max-width:820px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+
+.card{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:3px;
+  box-shadow:var(--shadow-card);
+  padding:22px;
+}
+.card + .card{margin-top:18px;}
+.card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:14px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--line);
+}
+.card-title{
+  font-family:var(--serif);
+  font-size:19px;
+  font-weight:600;
+  color:var(--ink);
+}
+.card-sub{font-size:12px;color:var(--ink-soft);margin-top:2px;}
+
+/* ============ ID CARD ============ */
+.id-card{
+  background:linear-gradient(135deg, var(--ink) 0%, #23383B 100%);
+  border-radius:6px;
+  padding:0;
+  overflow:hidden;
+  box-shadow:0 12px 32px -10px rgba(28,43,45,0.5);
+  border:1px solid rgba(255,255,255,0.08);
+}
+.id-card-top{
+  padding:20px 22px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  border-bottom:1px solid rgba(255,255,255,0.12);
+}
+.id-eyebrow{
+  font-family:var(--mono);
+  font-size:10.5px;
+  color:var(--gold-light);
+  letter-spacing:0.5px;
+}
+.id-name{
+  font-family:var(--serif);
+  font-size:26px;
+  color:var(--white);
+  font-weight:600;
+  margin-top:4px;
+}
+.id-role-badge{
+  background:var(--gold);
+  color:var(--ink);
+  font-size:11px;
+  font-weight:700;
+  padding:5px 10px;
+  border-radius:2px;
+  font-family:var(--mono);
+  white-space:nowrap;
+}
+.id-card-body{
+  padding:18px 22px 22px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+.id-stat-label{
+  font-size:10.5px;
+  color:rgba(255,253,249,0.55);
+  font-family:var(--mono);
+  letter-spacing:0.3px;
+}
+.id-stat-value{
+  font-family:var(--serif);
+  font-size:21px;
+  color:var(--white);
+  font-weight:600;
+  margin-top:3px;
+}
+.id-stat-value.money::before{content:"§";color:var(--gold-light);margin-right:2px;}
+
+/* ============ PROPERTY LIST ============ */
+.deed{
+  border:1px solid var(--line);
+  border-left:4px solid var(--treasury);
+  border-radius:2px;
+  padding:14px 16px;
+  margin-bottom:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:var(--paper-dim);
+}
+.deed.for-sale{border-left-color:var(--gold);}
+.deed-info{flex:1;}
+.deed-title{font-weight:600;font-size:15px;}
+.deed-meta{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);margin-top:3px;}
+.deed-price{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--treasury);}
+.deed-price.seal{color:var(--seal);}
+
+/* ============ BUTTONS ============ */
+.btn{
+  font-family:var(--sans);
+  font-size:13.5px;
+  font-weight:600;
+  padding:9px 16px;
+  border-radius:2px;
+  border:1px solid var(--ink);
+  background:var(--ink);
+  color:var(--white);
+  cursor:pointer;
+  transition:transform .1s ease, box-shadow .1s ease;
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 10px rgba(28,43,45,0.25);}
+.btn:active{transform:translateY(0);}
+.btn.secondary{background:transparent;color:var(--ink);border-color:var(--line-strong);}
+.btn.treasury{background:var(--treasury);border-color:var(--treasury);}
+.btn.seal{background:var(--seal);border-color:var(--seal);}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--ink);}
+.btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.btn.small{padding:6px 12px;font-size:12px;}
+
+input,select,textarea{
+  font-family:var(--sans);
+  font-size:14px;
+  padding:9px 11px;
+  border:1px solid var(--line-strong);
+  border-radius:2px;
+  background:var(--white);
+  color:var(--ink);
+  width:100%;
+}
+input:focus,select:focus,textarea:focus{
+  outline:2px solid var(--gold);
+  outline-offset:-1px;
+}
+label{font-size:12px;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:5px;margin-top:12px;}
+label:first-child{margin-top:0;}
+
+/* ============ LEDGER / TABLE ============ */
+.ledger-row{
+  display:grid;
+  grid-template-columns:90px 1fr 100px 90px;
+  gap:10px;
+  padding:9px 0;
+  border-bottom:1px solid var(--line);
+  font-size:13px;
+  align-items:center;
+}
+.ledger-row.head{
+  font-family:var(--mono);
+  font-size:10.5px;
+  color:var(--ink-soft);
+  letter-spacing:0.4px;
+  border-bottom:1px solid var(--line-strong);
+}
+.tag{
+  display:inline-block;
+  font-family:var(--mono);
+  font-size:10px;
+  padding:2px 7px;
+  border-radius:2px;
+  font-weight:600;
+}
+.tag.pos{background:rgba(47,82,51,0.12);color:var(--treasury);}
+.tag.neg{background:rgba(139,38,53,0.1);color:var(--seal);}
+
+/* ============ EMPTY STATE ============ */
+.empty{
+  text-align:center;
+  padding:40px 20px;
+  color:var(--ink-soft);
+}
+.empty-mark{font-family:var(--serif);font-size:32px;color:var(--line-strong);margin-bottom:8px;}
+.empty p{font-size:13.5px;margin:4px 0;}
+
+/* ============ LAND GRID ============ */
+.plot-grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:6px;
+  margin-top:6px;
+}
+@media(max-width:820px){.plot-grid{grid-template-columns:repeat(4,1fr);}}
+.plot{
+  aspect-ratio:1;
+  border:1px solid var(--line-strong);
+  border-radius:2px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-family:var(--mono);
+  font-size:10px;
+  text-align:center;
+  padding:4px;
+  transition:all .12s ease;
+  position:relative;
+}
+.plot:hover{transform:scale(1.04);z-index:2;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+.plot.owned-you{background:rgba(47,82,51,0.16);border-color:var(--treasury);}
+.plot.owned-other{background:rgba(28,43,45,0.06);border-color:var(--line-strong);}
+.plot.unclaimed{background:var(--paper-dim);border-style:dashed;}
+.plot.gov{background:rgba(139,38,53,0.1);border-color:var(--seal);}
+.plot-id{font-weight:600;color:var(--ink-soft);font-size:9px;}
+.plot-type{margin-top:3px;font-size:14px;}
+.plot-owner{font-size:8px;color:var(--ink-soft);margin-top:2px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+/* ============ MODAL ============ */
+.modal-overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(28,43,45,0.55);
+  z-index:100;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.modal-overlay.active{display:flex;}
+.modal{
+  background:var(--white);
+  border-radius:4px;
+  max-width:440px;
+  width:100%;
+  max-height:88vh;
+  overflow-y:auto;
+  box-shadow:0 30px 60px -15px rgba(0,0,0,0.4);
+  border:1px solid var(--line);
+}
+.modal-head{
+  padding:18px 22px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:var(--paper-dim);
+}
+.modal-title{font-family:var(--serif);font-size:19px;font-weight:600;}
+.modal-close{
+  background:none;border:none;cursor:pointer;
+  font-size:20px;color:var(--ink-soft);line-height:1;
+  padding:4px 8px;
+}
+.modal-body{padding:20px 22px;}
+.modal-foot{padding:14px 22px 20px;display:flex;gap:10px;justify-content:flex-end;}
+
+/* ============ HOST PANEL ============ */
+.host-strip{
+  background:var(--seal);
+  color:var(--white);
+  padding:8px 28px;
+  font-family:var(--mono);
+  font-size:11.5px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.host-strip .dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--gold-light);
+  display:inline-block;margin-right:6px;
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+.event-log-item{
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  gap:12px;
+}
+.event-log-item:last-child{border-bottom:none;}
+.event-icon{
+  width:32px;height:32px;
+  border-radius:50%;
+  background:var(--paper-dim);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;
+  flex-shrink:0;
+}
+.event-text{flex:1;font-size:13.5px;}
+.event-time{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);margin-top:2px;}
+
+.select-user-row{
+  display:flex;gap:8px;align-items:center;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:3px;
+  margin-bottom:8px;
+  cursor:pointer;
+  transition:background .1s ease;
+}
+.select-user-row:hover{background:var(--paper-dim);}
+.select-user-row.active{border-color:var(--gold);background:rgba(184,145,42,0.08);}
+.avatar-dot{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--ink);color:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-weight:600;font-size:13px;
+  flex-shrink:0;
+}
+
+.notice{
+  background:rgba(184,145,42,0.1);
+  border:1px solid rgba(184,145,42,0.35);
+  border-radius:3px;
+  padding:12px 14px;
+  font-size:12.5px;
+  color:#6B5419;
+  margin-bottom:16px;
+}
+.notice.info{background:rgba(28,43,45,0.05);border-color:var(--line-strong);color:var(--ink-soft);}
+
+.section-label{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--ink-soft);
+  letter-spacing:0.5px;
+  margin:24px 0 10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.section-label::after{content:"";flex:1;height:1px;background:var(--line);}
+
+.stat-mini{
+  border:1px solid var(--line);
+  border-radius:3px;
+  padding:16px;
+  background:var(--white);
+}
+.stat-mini-label{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);}
+.stat-mini-value{font-family:var(--serif);font-size:26px;font-weight:600;margin-top:4px;}
+
+.toast{
+  position:fixed;
+  bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(20px);
+  background:var(--ink);
+  color:var(--white);
+  padding:12px 22px;
+  border-radius:3px;
+  font-size:13.5px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.3);
+  z-index:200;
+  opacity:0;
+  transition:all .25s ease;
+  pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.login-wrap{
+  max-width:420px;
+  margin:80px auto;
+  text-align:center;
+}
+.login-wrap .seal-mark{width:56px;height:56px;font-size:24px;margin:0 auto 18px;}
+.login-wrap h1{font-family:var(--serif);font-size:26px;margin-bottom:6px;}
+.login-wrap p{color:var(--ink-soft);font-size:13.5px;margin-bottom:24px;}
+
+::-webkit-scrollbar{width:9px;}
+::-webkit-scrollbar-track{background:var(--paper);}
+::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:5px;}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+<div class="modal-overlay" id="modalOverlay"><div class="modal" id="modalContent"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= STATE & STORAGE ================= */
+const STORAGE_KEYS = {
+  citizens: 'citizens',      // shared: {id: citizen}
+  plots: 'plots',            // shared: {id: plot}
+  events: 'events',          // shared: array
+  meta: 'meta',              // shared: {treasury, term, president, vp}
+  session: 'session'         // personal: currently "logged in" citizen id
+};
+
+let DB = { citizens:{}, plots:{}, events:[], meta:{} };
+let currentUserId = null;
+let currentTab = 'dashboard';
+let isHost = false;
+
+const NUM_PLOTS = 36;
+const PLOT_TYPES = ['🏠','🏡','🏘️','🌾','🏢','🏭'];
+
+function fmtMoney(n){ return '§' + Number(n||0).toLocaleString(); }
+function fmtDate(ts){
+  const d = new Date(ts);
+  return d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}) + ' · ' + d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
+}
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+function uid(prefix){ return prefix + '_' + Math.random().toString(36).slice(2,9); }
+
+/* ================= PERSISTENCE ================= */
+async function loadAll(){
+  try{
+    const c = await window.storage.get(STORAGE_KEYS.citizens, true);
+    DB.citizens = c ? JSON.parse(c.value) : {};
+  }catch(e){ DB.citizens = {}; }
+  try{
+    const p = await window.storage.get(STORAGE_KEYS.plots, true);
+    DB.plots = p ? JSON.parse(p.value) : null;
+  }catch(e){ DB.plots = null; }
+  try{
+    const ev = await window.storage.get(STORAGE_KEYS.events, true);
+    DB.events = ev ? JSON.parse(ev.value) : [];
+  }catch(e){ DB.events = []; }
+  try{
+    const m = await window.storage.get(STORAGE_KEYS.meta, true);
+    DB.meta = m ? JSON.parse(m.value) : null;
+  }catch(e){ DB.meta = null; }
+
+  if(!DB.plots){
+    DB.plots = {};
+    for(let i=0;i<NUM_PLOTS;i++){
+      const id = 'P'+String(i+1).padStart(2,'0');
+      DB.plots[id] = {
+        id, type: PLOT_TYPES[i % PLOT_TYPES.length],
+        label: ['Cottage Row','Maple Residence','Civic Heights','Harvest Field','Commerce Block','Ironworks Yard'][i % 6] + ' #' + (i+1),
+        owner: null, ownerName: null, price: 250 + (i%6)*150 + Math.floor(i/6)*50,
+        forSale: true, government: (i===0||i===NUM_PLOTS-1)
+      };
+    }
+    if(DB.plots['P01']){ DB.plots['P01'].owner='GOV'; DB.plots['P01'].ownerName='The Republic'; DB.plots['P01'].forSale=false; DB.plots['P01'].label='Capitol Building'; DB.plots['P01'].type='🏛️';}
+    await saveDB('plots');
+  }
+  if(!DB.meta){
+    DB.meta = { treasury: 5000, term: 1, president: null, vp: null, taxRate: 8, founded: Date.now() };
+    await saveDB('meta');
+  }
+  try{
+    const s = await window.storage.get(STORAGE_KEYS.session, false);
+    currentUserId = s ? JSON.parse(s.value).userId : null;
+  }catch(e){ currentUserId = null; }
+}
+
+async function saveDB(key){
+  try{
+    await window.storage.set(STORAGE_KEYS[key], JSON.stringify(DB[key]), true);
+  }catch(e){ console.error('save failed', key, e); }
+}
+async function saveSession(){
+  try{
+    await window.storage.set(STORAGE_KEYS.session, JSON.stringify({userId: currentUserId}), false);
+  }catch(e){}
+}
+
+function addEvent(icon, text){
+  DB.events.unshift({icon, text, time: Date.now()});
+  DB.events = DB.events.slice(0, 60);
+  saveDB('events');
+}
+
+/* ================= CITIZEN HELPERS ================= */
+function me(){ return currentUserId ? DB.citizens[currentUserId] : null; }
+function citizenList(){ return Object.values(DB.citizens).sort((a,b)=>b.joined-a.joined); }
+function ownedPlots(citizenId){ return Object.values(DB.plots).filter(p=>p.owner===citizenId); }
+
+const JOBS = [
+  {id:'unemployed', name:'Civilian (Unemployed)', salary:0, emoji:'🚶'},
+  {id:'farmer', name:'Farmer', salary:40, emoji:'🌾'},
+  {id:'clerk', name:'Government Clerk', salary:55, emoji:'🗂️'},
+  {id:'merchant', name:'Merchant', salary:65, emoji:'🛒'},
+  {id:'engineer', name:'Civil Engineer', salary:80, emoji:'🛠️'},
+  {id:'judge_clerk', name:'Court Clerk', salary:70, emoji:'⚖️'},
+  {id:'diplomat', name:'Diplomat', salary:90, emoji:'🕊️'}
+];
+function jobById(id){ return JOBS.find(j=>j.id===id) || JOBS[0]; }
+
+/* ================= RENDER: ROOT ================= */
+function render(){
+  const app = document.getElementById('app');
+  if(!currentUserId || !DB.citizens[currentUserId]){
+    app.innerHTML = renderLogin();
+    return;
+  }
+  const user = me();
+  isHost = user.role === 'host';
+
+  app.innerHTML = `
+    ${isHost ? `<div class="host-strip"><span><span class="dot"></span>HOST SESSION — ${user.name}</span><span>ADMIN MODE</span></div>` : ''}
+    <div class="masthead">
+      <div class="masthead-row">
+        <div class="masthead-title"><span class="seal-mark">DG</span> Bureau of Civic Records</div>
+        <div class="masthead-meta">
+          TERM ${DB.meta.term} · TAX RATE ${DB.meta.taxRate}%<br>
+          TREASURY <span>${fmtMoney(DB.meta.treasury)}</span>
+        </div>
+      </div>
+      <div class="tab-row" id="tabRow">
+        ${tabButton('dashboard','My Dashboard')}
+        ${tabButton('land','Land & Property')}
+        ${tabButton('census','Public Census')}
+        ${tabButton('records','National Ledger')}
+        ${isHost ? tabButton('host','Host Control Panel') : ''}
+        <span style="flex:1"></span>
+        <button class="tab-btn" id="logoutBtn">Sign out</button>
+      </div>
+    </div>
+    <div class="page">
+      <div class="view active" id="view-dashboard"></div>
+      <div class="view" id="view-land"></div>
+      <div class="view" id="view-census"></div>
+      <div class="view" id="view-records"></div>
+      ${isHost ? '<div class="view" id="view-host"></div>' : ''}
+    </div>
+  `;
+  document.getElementById('logoutBtn').onclick = ()=>{
+    currentUserId = null; saveSession(); render();
+  };
+  document.querySelectorAll('.tab-btn[data-tab]').forEach(b=>{
+    b.onclick = ()=> switchTab(b.dataset.tab);
+  });
+  switchTab(currentTab);
+}
+
+function tabButton(id,label){
+  return `<button class="tab-btn" data-tab="${id}">${label}</button>`;
+}
+
+function switchTab(tab){
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn[data-tab]').forEach(b=>{
+    b.classList.toggle('active', b.dataset.tab===tab);
+  });
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const view = document.getElementById('view-'+tab);
+  if(!view) return;
+  view.classList.add('active');
+  if(tab==='dashboard') renderDashboard(view);
+  if(tab==='land') renderLand(view);
+  if(tab==='census') renderCensus(view);
+  if(tab==='records') renderRecords(view);
+  if(tab==='host') renderHost(view);
+}
+
+/* ================= LOGIN ================= */
+function renderLogin(){
+  return `
+  <div class="login-wrap">
+    <div class="seal-mark">DG</div>
+    <h1>Bureau of Civic Records</h1>
+    <p>Register as a citizen or sign in with your Discord name to access your dashboard, property, and standing in the Republic.</p>
+    <div class="card" style="text-align:left">
+      <label>Discord username</label>
+      <input id="loginName" placeholder="e.g. aarav.p or your server nickname" autocomplete="off">
+      <div style="display:flex;gap:10px;margin-top:16px;">
+        <button class="btn treasury" style="flex:1" id="loginBtn">Sign in / Register</button>
+      </div>
+      <p style="font-size:11.5px;color:var(--ink-soft);margin-top:14px;">
+        New citizens start with <b>§200</b> and no property. If your name matches an existing citizen record it will log you in as them — enter it exactly as registered.
+      </p>
+    </div>
+    <div class="notice info" style="text-align:left;margin-top:18px;">
+      Hosts: sign in with your registered host name to reach the Host Control Panel.
+    </div>
+  </div>`;
+}
+
+function wireLogin(){
+  const btn = document.getElementById('loginBtn');
+  if(!btn) return;
+  btn.onclick = async ()=>{
+    const name = document.getElementById('loginName').value.trim();
+    if(!name){ showToast('Enter a name to continue'); return; }
+    let existing = Object.values(DB.citizens).find(c=>c.name.toLowerCase()===name.toLowerCase());
+    if(existing){
+      currentUserId = existing.id;
+    } else {
+      const id = uid('cz');
+      DB.citizens[id] = {
+        id, name, role:'citizen', balance:200, job:'unemployed',
+        joined: Date.now(), taxPaid:0, votesCast:0, criminalRecord:[]
+      };
+      await saveDB('citizens');
+      addEvent('🎉', `${name} registered as a new citizen.`);
+      currentUserId = id;
+      showToast('Welcome to the Republic, ' + name);
+    }
+    await saveSession();
+    render();
+  };
+}
+
+/* ================= DASHBOARD ================= */
+function renderDashboard(view){
+  const u = me();
+  const plots = ownedPlots(u.id);
+  const job = jobById(u.job);
+  const rank = Object.keys(DB.citizens).length;
+
+  view.innerHTML = `
+    <div class="id-card">
+      <div class="id-card-top">
+        <div>
+          <div class="id-eyebrow">CERTIFICATE OF CITIZENSHIP · NO. ${u.id.toUpperCase()}</div>
+          <div class="id-name">${u.name}</div>
+        </div>
+        <div class="id-role-badge">${u.role==='host'?'HOST · SUPREME COURT':'CITIZEN'}</div>
+      </div>
+      <div class="id-card-body">
+        <div>
+          <div class="id-stat-label">TREASURY BALANCE</div>
+          <div class="id-stat-value money">${Number(u.balance).toLocaleString()}</div>
+        </div>
+        <div>
+          <div class="id-stat-label">OCCUPATION</div>
+          <div class="id-stat-value">${job.emoji} ${job.name}</div>
+        </div>
+        <div>
+          <div class="id-stat-label">PROPERTY HELD</div>
+          <div class="id-stat-value">${plots.length} plot${plots.length===1?'':'s'}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">SUMMARY</div>
+    <div class="grid-3">
+      <div class="stat-mini"><div class="stat-mini-label">DAILY WAGE</div><div class="stat-mini-value">${fmtMoney(job.salary)}</div></div>
+      <div class="stat-mini"><div class="stat-mini-label">LIFETIME TAX PAID</div><div class="stat-mini-value">${fmtMoney(u.taxPaid||0)}</div></div>
+      <div class="stat-mini"><div class="stat-mini-label">CITIZEN SINCE</div><div class="stat-mini-value" style="font-size:15px;">${new Date(u.joined).toLocaleDateString(undefined,{month:'short',year:'numeric'})}</div></div>
+    </div>
+
+    <div class="grid-2" style="margin-top:22px;">
+      <div>
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">My Property</div><div class="card-sub">Deeds registered under your name</div></div>
+            <button class="btn small secondary" data-goto="land">Visit land office</button>
+          </div>
+          ${plots.length ? plots.map(p=>`
+            <div class="deed">
+              <div class="deed-info">
+                <div class="deed-title">${p.type} ${p.label}</div>
+                <div class="deed-meta">PLOT ${p.id} · DEED HOLDER</div>
+              </div>
+              <div class="deed-price">${fmtMoney(p.price)}</div>
+            </div>
+          `).join('') : `<div class="empty"><div class="empty-mark">—</div><p>You hold no property yet.</p><p>Visit the Land Office to purchase a plot.</p></div>`}
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div><div class="card-title">Employment</div><div class="card-sub">Change your registered occupation</div></div>
+          </div>
+          <label>Select occupation</label>
+          <select id="jobSelect">
+            ${JOBS.map(j=>`<option value="${j.id}" ${j.id===u.job?'selected':''}>${j.emoji} ${j.name} — ${fmtMoney(j.salary)}/day</option>`).join('')}
+          </select>
+          <button class="btn treasury" style="margin-top:12px;" id="jobSaveBtn">Update occupation</button>
+          <button class="btn secondary" style="margin-top:12px;margin-left:8px;" id="collectWageBtn">Collect daily wage</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">Recent National Events</div></div>
+          ${DB.events.slice(0,6).map(e=>`
+            <div class="event-log-item">
+              <div class="event-icon">${e.icon}</div>
+              <div>
+                <div class="event-text">${e.text}</div>
+                <div class="event-time">${fmtDate(e.time)}</div>
+              </div>
+            </div>
+          `).join('') || '<div class="empty"><p>No events recorded yet.</p></div>'}
+        </div>
+      </div>
+    </div>
+  `;
+
+  view.querySelector('[data-goto="land"]').onclick = ()=> switchTab('land');
+  document.getElementById('jobSaveBtn').onclick = async ()=>{
+    const val = document.getElementById('jobSelect').value;
+    u.job = val;
+    await saveDB('citizens');
+    addEvent('💼', `${u.name} registered as ${jobById(val).name}.`);
+    showToast('Occupation updated');
+    render();
+  };
+  document.getElementById('collectWageBtn').onclick = async ()=>{
+    const job = jobById(u.job);
+    if(job.salary===0){ showToast('Unemployed citizens earn no wage'); return; }
+    const lastCollect = u.lastWage || 0;
+    const now = Date.now();
+    if(now - lastCollect < 1000*60*10){
+      showToast('Wages can be collected once every 10 minutes');
+      return;
+    }
+    const tax = Math.round(job.salary * (DB.meta.taxRate/100));
+    const net = job.salary - tax;
+    u.balance += net;
+    u.taxPaid = (u.taxPaid||0) + tax;
+    u.lastWage = now;
+    DB.meta.treasury += tax;
+    await saveDB('citizens'); await saveDB('meta');
+    addEvent('💰', `${u.name} collected a wage of ${fmtMoney(net)} (after ${fmtMoney(tax)} tax).`);
+    showToast(`Collected ${fmtMoney(net)} net wage`);
+    render();
+  };
+}
+
+/* ================= LAND OFFICE ================= */
+function renderLand(view){
+  const u = me();
+  const plotsArr = Object.values(DB.plots).sort((a,b)=>a.id.localeCompare(b.id));
+
+  view.innerHTML = `
+    <div class="card">
+      <div class="card-head">
+        <div><div class="card-title">Land Office — Plot Registry</div><div class="card-sub">${NUM_PLOTS} plots surveyed within Republic territory. Click a plot to view or purchase.</div></div>
+      </div>
+      <div class="plot-grid" id="plotGrid">
+        ${plotsArr.map(p=>{
+          let cls = 'unclaimed';
+          if(p.government) cls='gov';
+          else if(p.owner===u.id) cls='owned-you';
+          else if(p.owner) cls='owned-other';
+          return `<div class="plot ${cls}" data-plot="${p.id}">
+            <div class="plot-id">${p.id}</div>
+            <div class="plot-type">${p.type}</div>
+            <div class="plot-owner">${p.owner ? (p.owner===u.id?'You':p.ownerName) : fmtMoney(p.price)}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div style="display:flex;gap:16px;margin-top:16px;font-size:11.5px;color:var(--ink-soft);flex-wrap:wrap;">
+        <span>🟩 You own</span><span>⬜ Owned by others</span><span>▫️ Unclaimed / for sale</span><span>🟥 Government</span>
+      </div>
+    </div>
+  `;
+  view.querySelectorAll('.plot').forEach(el=>{
+    el.onclick = ()=> openPlotModal(el.dataset.plot);
+  });
+}
+
+function openPlotModal(plotId){
+  const p = DB.plots[plotId];
+  const u = me();
+  const owner = p.owner ? (p.owner===u.id ? 'You' : (p.owner==='GOV' ? 'The Republic' : p.ownerName)) : null;
+
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-head">
+      <div class="modal-title">${p.type} ${p.label}</div>
+      <button class="modal-close" id="modalCloseBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="ledger-row" style="grid-template-columns:1fr 1fr;"><span style="color:var(--ink-soft)">Plot ID</span><span>${p.id}</span></div>
+      <div class="ledger-row" style="grid-template-columns:1fr 1fr;"><span style="color:var(--ink-soft)">Status</span><span>${p.government?'Government reserve':(p.owner?'Owned':'Available')}</span></div>
+      <div class="ledger-row" style="grid-template-columns:1fr 1fr;"><span style="color:var(--ink-soft)">Owner</span><span>${owner || '— Unclaimed —'}</span></div>
+      <div class="ledger-row" style="grid-template-columns:1fr 1fr;"><span style="color:var(--ink-soft)">Assessed value</span><span>${fmtMoney(p.price)}</span></div>
+      ${p.government ? `<div class="notice" style="margin-top:14px;">This plot is reserved as a government facility and cannot be purchased.</div>` : ''}
+      ${(!p.government && !p.owner) ? `<div class="notice" style="margin-top:14px;">Your balance: ${fmtMoney(u.balance)}</div>` : ''}
+      ${(p.owner===u.id) ? `
+        <label>List for sale at price</label>
+        <input id="sellPrice" type="number" value="${p.price}" min="1">
+      ` : ''}
+    </div>
+    <div class="modal-foot">
+      <button class="btn secondary" id="modalCancelBtn">Close</button>
+      ${(!p.government && !p.owner) ? `<button class="btn treasury" id="buyBtn" ${u.balance<p.price?'disabled':''}>Purchase deed</button>` : ''}
+      ${(p.owner===u.id) ? `<button class="btn gold" id="relistBtn">Update listing</button><button class="btn seal" id="abandonBtn">Abandon plot</button>` : ''}
+    </div>
+  `;
+  document.getElementById('modalOverlay').classList.add('active');
+  document.getElementById('modalCloseBtn').onclick = closeModal;
+  document.getElementById('modalCancelBtn').onclick = closeModal;
+
+  const buyBtn = document.getElementById('buyBtn');
+  if(buyBtn) buyBtn.onclick = async ()=>{
+    if(u.balance < p.price){ showToast('Insufficient funds'); return; }
+    u.balance -= p.price;
+    DB.meta.treasury += Math.round(p.price*0.05);
+    p.owner = u.id; p.ownerName = u.name; p.forSale = false;
+    await saveDB('citizens'); await saveDB('plots'); await saveDB('meta');
+    addEvent('🏡', `${u.name} purchased ${p.label} (${p.id}) for ${fmtMoney(p.price)}.`);
+    showToast('Deed purchased — congratulations, landowner');
+    closeModal(); switchTab('land');
+  };
+  const relistBtn = document.getElementById('relistBtn');
+  if(relistBtn) relistBtn.onclick = async ()=>{
+    const val = Number(document.getElementById('sellPrice').value);
+    if(!val || val<1){ showToast('Enter a valid price'); return; }
+    p.price = val;
+    await saveDB('plots');
+    showToast('Listing updated');
+    closeModal(); switchTab('land');
+  };
+  const abandonBtn = document.getElementById('abandonBtn');
+  if(abandonBtn) abandonBtn.onclick = async ()=>{
+    p.owner = null; p.ownerName = null; p.forSale = true;
+    await saveDB('plots');
+    addEvent('📜', `${u.name} relinquished ownership of ${p.label} (${p.id}).`);
+    showToast('Plot returned to the registry');
+    closeModal(); switchTab('land');
+  };
+}
+function closeModal(){ document.getElementById('modalOverlay').classList.remove('active'); }
+
+/* ================= CENSUS ================= */
+function renderCensus(view){
+  const list = citizenList();
+  view.innerHTML = `
+    <div class="card">
+      <div class="card-head">
+        <div><div class="card-title">Public Census</div><div class="card-sub">${list.length} registered citizen${list.length===1?'':'s'} of the Republic</div></div>
+      </div>
+      <div class="ledger-row head"><span>ID</span><span>NAME</span><span>OCCUPATION</span><span>PROPERTY</span></div>
+      ${list.map(c=>`
+        <div class="ledger-row">
+          <span style="font-family:var(--mono);color:var(--ink-soft)">${c.id.toUpperCase()}</span>
+          <span>${c.name} ${c.role==='host'?'<span class="tag pos">HOST</span>':''}</span>
+          <span>${jobById(c.job).emoji} ${jobById(c.job).name}</span>
+          <span>${ownedPlots(c.id).length} plots</span>
+        </div>
+      `).join('') || '<div class="empty"><p>No citizens registered yet.</p></div>'}
+    </div>
+  `;
+}
+
+/* ================= NATIONAL LEDGER ================= */
+function renderRecords(view){
+  view.innerHTML = `
+    <div class="grid-3" style="margin-bottom:22px;">
+      <div class="stat-mini"><div class="stat-mini-label">NATIONAL TREASURY</div><div class="stat-mini-value">${fmtMoney(DB.meta.treasury)}</div></div>
+      <div class="stat-mini"><div class="stat-mini-label">CURRENT TAX RATE</div><div class="stat-mini-value">${DB.meta.taxRate}%</div></div>
+      <div class="stat-mini"><div class="stat-mini-label">PRESIDENTIAL TERM</div><div class="stat-mini-value">${DB.meta.term}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><div class="card-title">National Event Ledger</div><div class="card-sub">Full public record, most recent first</div></div>
+      ${DB.events.map(e=>`
+        <div class="event-log-item">
+          <div class="event-icon">${e.icon}</div>
+          <div><div class="event-text">${e.text}</div><div class="event-time">${fmtDate(e.time)}</div></div>
+        </div>
+      `).join('') || '<div class="empty"><p>The ledger is empty. History begins now.</p></div>'}
+    </div>
+  `;
+}
+
+/* ================= HOST CONTROL PANEL ================= */
+let hostSelectedCitizen = null;
+
+function renderHost(view){
+  const list = citizenList().filter(c=>c.role!=='host');
+  view.innerHTML = `
+    <div class="notice">You are viewing the Host Control Panel. Actions here affect the shared national database for every citizen — used to keep hosts strictly neutral and consistent per §1 Host Neutrality.</div>
+
+    <div class="grid-2">
+      <div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">Post a National Event</div><div class="card-sub">Announce elections, disasters, policy changes, wars, festivals — anything.</div></div>
+          <label>Icon (single emoji)</label>
+          <input id="evIcon" placeholder="📢" maxlength="4">
+          <label>Announcement text</label>
+          <textarea id="evText" rows="3" placeholder="e.g. A drought has struck the northern farmland — farmer wages reduced by 20% for one week."></textarea>
+          <button class="btn seal" style="margin-top:12px;" id="postEventBtn">Post to National Ledger</button>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-title">Treasury & Tax Controls</div></div>
+          <label>National tax rate (%)</label>
+          <input id="taxRateInput" type="number" value="${DB.meta.taxRate}" min="0" max="100">
+          <label>Adjust treasury by (use negative to subtract)</label>
+          <input id="treasuryAdjust" type="number" placeholder="0">
+          <div style="display:flex;gap:10px;margin-top:12px;">
+            <button class="btn treasury" id="saveTaxBtn" style="flex:1">Update tax rate</button>
+            <button class="btn gold" id="adjustTreasuryBtn" style="flex:1">Adjust treasury</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-title">Election Cycle</div><div class="card-sub">Advance the presidential term counter (§2)</div></div>
+          <label>Sitting President name</label>
+          <input id="presInput" value="${DB.meta.president||''}" placeholder="Not yet elected">
+          <label>Sitting Vice President name</label>
+          <input id="vpInput" value="${DB.meta.vp||''}" placeholder="Not yet elected">
+          <button class="btn seal" style="margin-top:12px;" id="saveExecBtn">Record election result</button>
+          <button class="btn secondary" style="margin-top:12px;margin-left:8px;" id="advanceTermBtn">Advance to next term</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="card-head"><div class="card-title">Citizen Management</div></div>
+          <div style="max-height:260px;overflow-y:auto;">
+            ${list.map(c=>`
+              <div class="select-user-row ${hostSelectedCitizen===c.id?'active':''}" data-cz="${c.id}">
+                <div class="avatar-dot">${c.name.slice(0,2).toUpperCase()}</div>
+                <div style="flex:1;">
+                  <div style="font-weight:600;font-size:13.5px;">${c.name}</div>
+                  <div style="font-size:11px;color:var(--ink-soft);font-family:var(--mono);">${fmtMoney(c.balance)} · ${ownedPlots(c.id).length} plots</div>
+                </div>
+              </div>
+            `).join('') || '<div class="empty"><p>No citizens yet.</p></div>'}
+          </div>
+          <div id="citizenActionPanel" style="margin-top:16px;"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-title">Grant Government Plot</div><div class="card-sub">Directly assign a plot's ownership, bypassing purchase</div></div>
+          <label>Plot ID</label>
+          <select id="grantPlotSelect">
+            ${Object.values(DB.plots).map(p=>`<option value="${p.id}">${p.id} — ${p.label} (${p.owner ? 'owned by '+(p.ownerName||'?') : 'unclaimed'})</option>`).join('')}
+          </select>
+          <label>Assign to citizen</label>
+          <select id="grantCitizenSelect">
+            <option value="">— Return to unclaimed —</option>
+            ${list.map(c=>`<option value="${c.id}">${c.name}</option>`).join('')}
+          </select>
+          <button class="btn gold" style="margin-top:12px;" id="grantPlotBtn">Apply plot change</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('postEventBtn').onclick = async ()=>{
+    const icon = document.getElementById('evIcon').value.trim() || '📢';
+    const text = document.getElementById('evText').value.trim();
+    if(!text){ showToast('Write an announcement first'); return; }
+    addEvent(icon, text);
+    document.getElementById('evText').value='';
+    showToast('Event posted to national ledger');
+    renderHost(view);
+  };
+  document.getElementById('saveTaxBtn').onclick = async ()=>{
+    const v = Number(document.getElementById('taxRateInput').value);
+    DB.meta.taxRate = Math.max(0, Math.min(100, v));
+    await saveDB('meta');
+    addEvent('📊', `Tax rate updated to ${DB.meta.taxRate}%.`);
+    showToast('Tax rate updated');
+    render();
+  };
+  document.getElementById('adjustTreasuryBtn').onclick = async ()=>{
+    const v = Number(document.getElementById('treasuryAdjust').value);
+    if(!v){ showToast('Enter a nonzero amount'); return; }
+    DB.meta.treasury += v;
+    await saveDB('meta');
+    addEvent('🏦', `Treasury adjusted by ${v>0?'+':''}${fmtMoney(v)} by host order.`);
+    showToast('Treasury updated');
+    render();
+  };
+  document.getElementById('saveExecBtn').onclick = async ()=>{
+    DB.meta.president = document.getElementById('presInput').value.trim();
+    DB.meta.vp = document.getElementById('vpInput').value.trim();
+    await saveDB('meta');
+    addEvent('🗳️', `${DB.meta.president || 'A new President'} takes office with ${DB.meta.vp || 'a Vice President'} for Term ${DB.meta.term}.`);
+    showToast('Executive branch updated');
+    render();
+  };
+  document.getElementById('advanceTermBtn').onclick = async ()=>{
+    DB.meta.term += 1;
+    await saveDB('meta');
+    addEvent('📅', `The Republic enters Term ${DB.meta.term}.`);
+    showToast('Term advanced');
+    render();
+  };
+  document.getElementById('grantPlotBtn').onclick = async ()=>{
+    const plotId = document.getElementById('grantPlotSelect').value;
+    const czId = document.getElementById('grantCitizenSelect').value;
+    const p = DB.plots[plotId];
+    if(czId){
+      p.owner = czId; p.ownerName = DB.citizens[czId].name; p.forSale=false;
+      addEvent('🏛️', `Host granted ${p.label} (${p.id}) to ${p.ownerName}.`);
+    } else {
+      p.owner = null; p.ownerName = null; p.forSale=true;
+      addEvent('🏛️', `Host returned ${p.label} (${p.id}) to the unclaimed registry.`);
+    }
+    await saveDB('plots');
+    showToast('Plot ownership updated');
+    renderHost(view);
+  };
+  view.querySelectorAll('.select-user-row').forEach(row=>{
+    row.onclick = ()=>{
+      hostSelectedCitizen = row.dataset.cz;
+      renderHost(view);
+      renderCitizenActionPanel(view);
+    };
+  });
+  if(hostSelectedCitizen) renderCitizenActionPanel(view);
+}
+
+function renderCitizenActionPanel(view){
+  const cz = DB.citizens[hostSelectedCitizen];
+  if(!cz) return;
+  const panel = document.getElementById('citizenActionPanel');
+  if(!panel) return;
+  panel.innerHTML = `
+    <div class="section-label">MANAGE ${cz.name.toUpperCase()}</div>
+    <label>Adjust balance by (§)</label>
+    <input id="balAdjust" type="number" placeholder="e.g. 100 or -50">
+    <button class="btn treasury small" style="margin-top:8px;" id="balAdjustBtn">Apply</button>
+
+    <label style="margin-top:16px;">Log a violation / criminal record entry</label>
+    <input id="violationInput" placeholder="e.g. Voter fraud — multiple accounts (§1)">
+    <button class="btn seal small" style="margin-top:8px;" id="violationBtn">Add to record</button>
+
+    ${cz.criminalRecord && cz.criminalRecord.length ? `
+      <div style="margin-top:12px;font-size:12px;color:var(--ink-soft);">
+        ${cz.criminalRecord.map(v=>`<div style="padding:4px 0;border-bottom:1px solid var(--line);">⚠️ ${v}</div>`).join('')}
+      </div>` : ''}
+  `;
+  document.getElementById('balAdjustBtn').onclick = async ()=>{
+    const v = Number(document.getElementById('balAdjust').value);
+    if(!v){ showToast('Enter a nonzero amount'); return; }
+    cz.balance += v;
+    await saveDB('citizens');
+    addEvent('💵', `Host adjusted ${cz.name}'s balance by ${v>0?'+':''}${fmtMoney(v)}.`);
+    showToast('Balance updated');
+    renderHost(document.getElementById('view-host'));
+  };
+  document.getElementById('violationBtn').onclick = async ()=>{
+    const v = document.getElementById('violationInput').value.trim();
+    if(!v){ showToast('Describe the violation'); return; }
+    cz.criminalRecord = cz.criminalRecord || [];
+    cz.criminalRecord.push(v);
+    await saveDB('citizens');
+    addEvent('⚠️', `${cz.name} received a constitutional violation record: "${v}"`);
+    showToast('Violation logged');
+    renderHost(document.getElementById('view-host'));
+  };
+}
+
+/* ================= INIT ================= */
+async function init(){
+  document.getElementById('app').innerHTML = '<div class="page"><p style="text-align:center;color:var(--ink-soft);padding:60px;">Loading civic records…</p></div>';
+  await loadAll();
+  render();
+  wireLogin();
+  document.getElementById('modalOverlay').addEventListener('click', (e)=>{
+    if(e.target.id==='modalOverlay') closeModal();
+  });
+}
+init();
+
+// Re-wire login button after every render if on login screen
+const origRender = render;
+render = function(){
+  origRender();
+  wireLogin();
+};
+</script>
+</body>
+</html>
